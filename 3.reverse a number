@@ -1,26 +1,49 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <stdlib.h> // For strtol function
+#include <ctype.h>  // For isdigit function
 
+// Function to reverse a given number
 int reverseNumber(int num) {
-    int reversed = 0;
-    while (num > 0) {
+    int reversedNum = 0;
+
+    while (num != 0) {
         int digit = num % 10;
-        reversed = reversed * 10 + digit;
+        reversedNum = reversedNum * 10 + digit;
         num /= 10;
     }
-    return reversed;
+
+    return reversedNum;
 }
 
 int main() {
-    int num;
+    char input[100];
+
+    // Input
     printf("Enter a number: ");
-    if (scanf("%d", &num) != 1) {
-        printf("Illegal input\n");
-        return 1;
+    fgets(input, sizeof(input), stdin);
+
+    // Check for non-numeric characters
+    for (int i = 0; input[i] != '\0'; i++) {
+        if (!isdigit(input[i]) && input[i] != '\n') {
+            printf("Illegal input\n");
+            return 1; // Exit with an error code
+        }
     }
-    
-    int reversed = reverseNumber(num);
-    printf("Reversed number: %d\n", reversed);
-    
+
+    // Convert input string to integer
+    char *endptr;
+    long number = strtol(input, &endptr, 10);
+
+    if (*endptr != '\0' && *endptr != '\n') {
+        printf("Illegal input\n");
+        return 1; // Exit with an error code
+    }
+
+    // Reverse the number
+    int reversedNumber = reverseNumber(number);
+
+    // Output
+    printf("Reversed number: %d\n", reversedNumber);
+
     return 0;
 }
